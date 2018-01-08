@@ -2,7 +2,7 @@ pragma solidity ^0.4.17;
 import "./strings.sol";
 
 contract HelloWorld {
-	address owner;
+	address public owner;
 	using strings for *;
 	// 构造函数
 	function HelloWorld() payable {
@@ -38,6 +38,14 @@ contract HelloWorld {
 
 	function sayHello(string name) public returns (string) {
 		return "Hello, ".toSlice().concat(name.toSlice());
+	}
+
+	function ownerBalance() public returns (uint) {
+		return owner.balance;
+	}
+
+	function ownerAddress() public returns (address) {
+		return owner;
 	}
 
 }

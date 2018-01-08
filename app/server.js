@@ -52,4 +52,20 @@ app.get('/sayHello', function(req, res, next){
   })
 });
 
+app.get('/ownerBalance', function(req, res, next) {
+  hello.then(function(instance) {
+    return instance.ownerBalance.call();
+  }).then(function(result) {
+    res.send(result + "");
+  });
+});
+
+app.get('/ownerAddress', function(req, res, next) {
+  hello.then(function(instance) {
+    return instance.ownerAddress.call();
+  }).then(function(result) {
+    res.send(result + "");
+  });
+});
+
 app.listen(8080);

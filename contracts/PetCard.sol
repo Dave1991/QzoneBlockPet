@@ -2,10 +2,11 @@ pragma solidity ^0.4.17;
 
 contract PetCard {
     struct Card {
-        string code;
+        string code; //卡片代码，决定卡片的功能
         uint256 value;
         address owner;
         bool isSelling;
+        uint cardId;
     }
     Card[] cards;
     address CEO;
@@ -14,9 +15,9 @@ contract PetCard {
     }
 
     // 匿名函数，当外部调用找不到时调用该函数
-	event fallbackTrigged(bytes data);
-	function() payable {
-		fallbackTrigged(msg.data);
+	event FallbackTrigged(bytes data);
+	function() public payable {
+		FallbackTrigged(msg.data);
 	}
 
     // 从卡片商城中购买卡片
@@ -72,7 +73,20 @@ contract PetCard {
 
     // 用户取消出售卡片
     function cancelSellCard(uint cardId) public payable returns (bool) {
-        
+        // 判断卡片下标是否合法
+        if (cardId >= cards.length || cardId < 0) {
+            return false;       
+        }
+        Card storage card = cards[cardId];
+        if (card.owner != msg.sender) {
+            return false;
+        }
+        if (!card.isSelling) {
+            return false;
+        }
+        msg.sender.transfer(card.value);
+        card.isSelling = false;
+        return true;
     }
 
     // 用户交换卡片
@@ -94,5 +108,22 @@ contract PetCard {
         return true;
     }
 
-    
+    // 获取用户所有卡片
+    function getAllCardsForUser(address user) public returns (Card[]) {
+        Card[] storage userCards;
+        for (uint i = 0; i < cards.length; i++) {
+            Card card = cards[i];
+            if (card.owner == user) {
+                userCards.push(card);
+            }
+        }
+        return userCards;
+    }
+
+    // 给用户掉落新卡片
+    function createNewCardForUser(string code, uint value) public returns (Card card) {
+        card = Card({code: code, value: value, owner: msg.sender, isSelling: false, cardId: cards.length});
+        cards.push(card);
+    }
+
 }

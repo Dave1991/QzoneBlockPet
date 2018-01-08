@@ -8,6 +8,7 @@
 - truffle.js : 区块链网络配置文件，目前配的是testrpc默认测试环境
 
 ### 依赖
+使用npm install xxx安装
 - node.js : 在官网下载二进制安装包，或者用brew/apt-get安装
 - web3.js : 使用npm安装，以太坊提供的js接口以rpc方式访问区块链数据和合约
 - truffle : 第三方开源的DApp打包工具
