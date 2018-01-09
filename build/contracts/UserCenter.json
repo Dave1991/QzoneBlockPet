@@ -428,8 +428,13 @@
       "events": {},
       "links": {},
       "address": "0xd0ff7fc998de8468d97b10d0038c5c7715183085"
+    },
+    "1515481138869": {
+      "events": {},
+      "links": {},
+      "address": "0x931c2a5de22936b0887784f8fc41813caec11900"
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-08T14:39:05.213Z"
+  "updatedAt": "2018-01-09T07:57:32.115Z"
 }

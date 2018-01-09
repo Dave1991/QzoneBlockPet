@@ -2,11 +2,15 @@ contract = require('truffle-contract');
 provider = require('./Web3Provider.js');
 express = require("express");
 
-const UserCenter = contract(require('../../build/contracts/UserCenter.json'));
-UserCenter.setProvider(provider);
+// const UserCenter = contract(require('../../build/contracts/UserCenter.json'));
+// UserCenter.setProvider(provider);
 
+// var userCenter;
+// UserCenter.deployed().then(function(instance) {
+//     userCenter = instance;
+// });
 var userCenter;
-UserCenter.deployed().then(function(instance) {
+require('./UserCenterCore.js').then(function(instance) {
     userCenter = instance;
 });
 
@@ -16,9 +20,9 @@ app.get('/', function(req, res) {
     res.send('Hello, this is UserCenter');
 });
 
-app.get('/register', function(req, res) {
+app.get('/register/:address', function(req, res) {
     // 这里不能用call，不然写不到合约里
-    userCenter.register({from: req.query.address}).then(function(result) {
+    userCenter.register({from: req.params.address}).then(function(result) {
         res.send("success");
     });
 });
@@ -26,5 +30,5 @@ app.get('/register', function(req, res) {
 app.get('/showAllUsers', function(req, res) {
     userCenter.showAllPlayers.call().then(function(result) {
         res.send(result);
-    })
+    });
 });

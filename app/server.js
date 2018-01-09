@@ -15,4 +15,6 @@ app.use('/HelloWorld', require('./javascripts/HelloWorld.js'));
 
 app.use('/UserCenter', require('./javascripts/UserCenter.js'));
 
+app.use('/PetCard', require('./javascripts/PetCard.js'));
+
 app.listen(8080);

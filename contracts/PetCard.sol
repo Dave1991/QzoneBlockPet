@@ -109,11 +109,11 @@ contract PetCard {
     }
 
     // 获取用户所有卡片
-    function getAllCardsForUser(address user) public returns (Card[]) {
+    function getAllCardsForUser() public returns (Card[]) {
         Card[] storage userCards;
         for (uint i = 0; i < cards.length; i++) {
             Card card = cards[i];
-            if (card.owner == user) {
+            if (card.owner == msg.sender) {
                 userCards.push(card);
             }
         }
