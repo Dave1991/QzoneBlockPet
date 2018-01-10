@@ -22,13 +22,13 @@ app.get('/', function(req, res) {
 });
 
 app.get('/buyCard/:address/:cardId/:price', function(req, res) {
-    petCard.buyCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(req, res) {
+    petCard.buyCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(result) {
         res.send("success");
     });
 });
 
 app.get('/sellCard/:address/:cardId/:price', function(req, res) {
-    petCard.sellCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(req, res) {
+    petCard.sellCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(result) {
         res.send("success");
     });
 });
@@ -40,7 +40,7 @@ app.get('/cancelSellCard/:address/:cardId', function(req, res) {
 });
 
 app.get('/exchangeCard/:address/:otherAddress/:cardId', function(req, res) {
-    petCard.exchangeCard(req.params.cardId, req.params.otherAddress, {from: req.params.address}).then(function(req, res) {
+    petCard.exchangeCard(req.params.cardId, req.params.otherAddress, {from: req.params.address}).then(function(result) {
         res.send("success");
     });
 });
@@ -48,8 +48,10 @@ app.get('/exchangeCard/:address/:otherAddress/:cardId', function(req, res) {
 app.get('/getAllCardsForUser/:address', function(req, res) {
     petCard.getAllCardsForUser.estimateGas().then(function(esti_gas) {
         res.write(esti_gas + "\n");
-        petCard.getAllCardsForUser({from: req.params.address, gas: esti_gas}).then(function() {
-            res.write("success");
+        petCard.getAllCardsForUser.call({from: req.params.address, gas: 3000000}).then(function(result) {
+            result.forEach(element => {
+                res.write(element + "\n");
+            });
             res.end();
         });
     });
@@ -68,11 +70,14 @@ app.get('/createRandomCard', function(req, res) {
             petCard.createNewCardForUser.estimateGas(cardCode, cardValue).then(function(esti_gas) {
                 return petCard.createNewCardForUser(cardCode, cardValue, {from: randomUser, gas: esti_gas});
             }).then(function(rest) {
-                res.send("success, card owner: " + randomUser);
+                if (rest.logs.length > 0) {
+                    var eventObj = rest.logs[0].args;
+                    res.send(JSON.stringify(eventObj));
+                }
+                // res.send("success, card owner: " + randomUser);
             });
         } else {
             res.send("random user is undefined");
         }
     });
 });
-
