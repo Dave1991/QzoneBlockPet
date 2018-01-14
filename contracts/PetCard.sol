@@ -2,7 +2,7 @@ pragma solidity ^0.4.17;
 
 contract PetCard {
     struct Card {
-        string code; //卡片代码，决定卡片的功能
+        bytes32 code; //卡片代码，决定卡片的功能
         uint256 value;
         address owner;
         bool isSelling;
@@ -78,7 +78,7 @@ contract PetCard {
 
     event CancelSellCardEvent(uint cardId, bool isSuccess, ErrorCode errorCode);
     // 用户取消出售卡片
-    function cancelSellCard(uint cardId) public payable {
+    function cancelSellCard(uint cardId) public {
         // 判断卡片下标是否合法
         if (cardId >= cards.length || cardId < 0) {
             CancelSellCardEvent(cardId, false, ErrorCode.ERROR_INDEX_OUT_OF_RANGE);
@@ -116,22 +116,25 @@ contract PetCard {
     }
 
     // 获取用户所有卡片
-    function getAllCardsForUser() public constant returns (uint[] cardIds, uint len) {
+    function getAllCardsForUser() public constant returns (uint[] cardIds, bytes32[] codes, uint[] values, uint len) {
         cardIds = new uint[](cards.length);
+        codes = new bytes32[](cards.length);
+        values = new uint[](cards.length);
         // codes = new string[](cards.length);
         len = 0;
         for (uint i = 0; i < cards.length; i++) {
             if (cards[i].owner == msg.sender) {
                 cardIds[len] = cards[i].cardId;
-                // codes[len] = cards[i].code;
+                codes[len] = cards[i].code;
+                values[len] = cards[i].value;
                 len++;
             }
         }
     }
 
-    event CreateNewCardEvent(uint cardId, string code, address owner, uint value);
+    event CreateNewCardEvent(uint cardId, bytes32 code, address owner, uint value);
     // 给用户掉落新卡片
-    function createNewCardForUser(string code, uint value) public {
+    function createNewCardForUser(bytes32 code, uint value) public {
         Card memory card = Card({code: code, value: value, owner: msg.sender, isSelling: false, cardId: cards.length, sellingPrice: 0});
         cards.push(card);
         CreateNewCardEvent(card.cardId, card.code, card.owner, card.value);

@@ -46,14 +46,12 @@ app.get('/exchangeCard/:address/:otherAddress/:cardId', function(req, res) {
 });
 
 app.get('/getAllCardsForUser/:address', function(req, res) {
-    petCard.getAllCardsForUser.estimateGas().then(function(esti_gas) {
-        res.write(esti_gas + "\n");
-        petCard.getAllCardsForUser.call({from: req.params.address, gas: 3000000}).then(function(result) {
-            result.forEach(element => {
-                res.write(element + "\n");
-            });
-            res.end();
+    // 因为这是for循环遍历，estimate 估计的gas会不准确，该方法慎调
+    petCard.getAllCardsForUser.call({from: req.params.address, gas: 3000000}).then(function(result) {
+        result.forEach(element => {
+            res.write(element + "\n");
         });
+        res.end();
     });
 });
 
@@ -74,7 +72,6 @@ app.get('/createRandomCard', function(req, res) {
                     var eventObj = rest.logs[0].args;
                     res.send(JSON.stringify(eventObj));
                 }
-                // res.send("success, card owner: " + randomUser);
             });
         } else {
             res.send("random user is undefined");
