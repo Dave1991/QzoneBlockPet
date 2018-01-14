@@ -60,16 +60,19 @@ contract PetCard {
         if (cardId >= cards.length || cardId < 0) {
             seller.transfer(msg.value);
             SellCardEvent(cardId, false, ErrorCode.ERROR_INDEX_OUT_OF_RANGE);
+            return;
         }
         Card storage card = cards[cardId];
         // 判断卖家是否为卡片拥有者
         if (seller != card.owner) {
             seller.transfer(msg.value);
             SellCardEvent(cardId, false, ErrorCode.ERROR_WRONG_OWNER);
+            return;
         }
         if (card.isSelling) {
             seller.transfer(msg.value);
             SellCardEvent(cardId, false, ErrorCode.ERROR_CARD_IS_SELLING);
+            return;
         }
         card.isSelling = true;
         card.sellingPrice = msg.value;
@@ -82,13 +85,16 @@ contract PetCard {
         // 判断卡片下标是否合法
         if (cardId >= cards.length || cardId < 0) {
             CancelSellCardEvent(cardId, false, ErrorCode.ERROR_INDEX_OUT_OF_RANGE);
+            return;
         }
         Card storage card = cards[cardId];
         if (card.owner != msg.sender) {
             CancelSellCardEvent(cardId, false, ErrorCode.ERROR_WRONG_OWNER);
+            return;
         }
         if (!card.isSelling) {
             CancelSellCardEvent(cardId, false, ErrorCode.ERROR_CARD_IS_NOT_SELLING);
+            return;
         }
         msg.sender.transfer(card.sellingPrice);
         card.isSelling = false;
@@ -101,15 +107,18 @@ contract PetCard {
         // 判断卡片下标是否合法
         if (cardId >= cards.length || cardId < 0) {
             ExchangeCardEvent(cardId, card.owner, false, ErrorCode.ERROR_INDEX_OUT_OF_RANGE);      
+            return;
         }
         Card storage card = cards[cardId];
         // 判断卡片拥有者
         if (card.owner != msg.sender) {
             ExchangeCardEvent(cardId, card.owner, false, ErrorCode.ERROR_WRONG_OWNER);
+            return;
         }
         // 判断卡片是否正在出售
         if (card.isSelling) {
             ExchangeCardEvent(cardId, card.owner, false, ErrorCode.ERROR_CARD_IS_SELLING);
+            return;
         }
         card.owner = otherUser;
         ExchangeCardEvent(cardId, card.owner, true, ErrorCode.ERROR_NO_ERROR);
