@@ -30,17 +30,20 @@ contract PetCard {
         if (cardId >= cards.length || cardId < 0) {
             buyer.transfer(msg.value);
             BuyCardEvent(cardId, false, ErrorCode.ERROR_INDEX_OUT_OF_RANGE);
+            return;
         }
         Card storage card = cards[cardId];
         // 判断消费金额是否小于card价格
         if (msg.value < card.sellingPrice) {
             buyer.transfer(msg.value);
             BuyCardEvent(cardId, false, ErrorCode.ERROR_PRICE_NOT_ENOUGH);
+            return;
         } 
         // 判断卡片是否正在销售
         if (!card.isSelling) {
             buyer.transfer(msg.value);
             BuyCardEvent(cardId, false, ErrorCode.ERROR_CARD_IS_NOT_SELLING);
+            return;
         }
         // 将卡片卖的钱还给卖家
         if (this.balance >= card.sellingPrice) {

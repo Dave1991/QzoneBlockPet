@@ -23,12 +23,16 @@ app.get('/', function(req, res) {
 app.get('/register/:address', function(req, res) {
     // 这里不能用call，不然写不到合约里
     userCenter.register({from: req.params.address}).then(function(result) {
-        res.send("success");
+        res.send(JSON.stringify({isSuccess: true}));
     });
 });
 
 app.get('/showAllUsers', function(req, res) {
     userCenter.showAllPlayers.call().then(function(result) {
-        res.send(result);
+        var addresses = []
+        result.forEach(element => {
+            addresses.push({address: element});
+        });
+        res.send(JSON.stringify(addresses));
     });
 });

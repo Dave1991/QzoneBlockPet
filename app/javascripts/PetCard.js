@@ -23,35 +23,52 @@ app.get('/', function(req, res) {
 
 app.get('/buyCard/:address/:cardId/:price', function(req, res) {
     petCard.buyCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(result) {
-        res.send("success");
+        if (result.logs.length > 0) {
+            var eventObj = result.logs[0].args;
+            res.send(JSON.stringify(eventObj));
+        }
     });
 });
 
 app.get('/sellCard/:address/:cardId/:price', function(req, res) {
     petCard.sellCard(req.params.cardId, {from: req.params.address, value: req.params.price}).then(function(result) {
-        res.send("success");
+        if (result.logs.length > 0) {
+            var eventObj = result.logs[0].args;
+            res.send(JSON.stringify(eventObj));
+        }
     });
 });
 
 app.get('/cancelSellCard/:address/:cardId', function(req, res) {
-    petCard.cancelSellCard(req.params.cardId, {from: req.params.address}).then(function(req, res) {
-        res.send("success");
+    petCard.cancelSellCard(req.params.cardId, {from: req.params.address}).then(function(result) {
+        if (result.logs.length > 0) {
+            var eventObj = result.logs[0].args;
+            res.send(JSON.stringify(eventObj));
+        }
     });
 });
 
 app.get('/exchangeCard/:address/:otherAddress/:cardId', function(req, res) {
     petCard.exchangeCard(req.params.cardId, req.params.otherAddress, {from: req.params.address}).then(function(result) {
-        res.send("success");
+        if (result.logs.length > 0) {
+            var eventObj = result.logs[0].args;
+            res.send(JSON.stringify(eventObj));
+        }
     });
 });
 
 app.get('/getAllCardsForUser/:address', function(req, res) {
     // 因为这是for循环遍历，estimate 估计的gas会不准确，该方法慎调
     petCard.getAllCardsForUser.call({from: req.params.address, gas: 3000000}).then(function(result) {
-        result.forEach(element => {
-            res.write(element + "\n");
-        });
-        res.end();
+        if (result.length >= 4) {
+            var cardIds = result[0], codes = result[1], values = result[2];
+            var len = result[3];
+            var cards = [];
+            for (var i = 0; i < len; i ++) {
+                cards.push({cardId: cardIds[i], code: codes[i], value: values[i]});
+            }
+            res.send(JSON.stringify(cards));
+        }
     });
 });
 
