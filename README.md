@@ -16,13 +16,13 @@
 - ethereum-testrpc : 以太坊提供的区块链测试环境
 
 ### 运行方式
-1. $ testrpc
+1. `$ testrpc`
 启动区块链测试环境
-2. $ truffle compile 
+2. `$ truffle compile`
 编译智能合约
-3. $ truffle migrate --reset
+3. `$ truffle migrate --reset`
 部署所有智能合约
-4. $ cd app
-5. $ npm start
+4. `$ cd app`
+5. `$ npm start`
 启动服务器
-6. 浏览器访问localhost:8080，目前提供的接口详见[INTERFACE.md](blob/master/INTERFACE.md)
+6. 浏览器访问localhost:8080，目前提供的接口详见[INTERFACE.md](/forrestlin/QzoneBlockPet/blob/master/INTERFACE.md)
