@@ -25,4 +25,4 @@
 4. $ cd app
 5. $ npm start
 启动服务器
-6. 浏览器访问localhost:8080，目前提供的接口详见app/server.js中声明
+6. 浏览器访问localhost:8080，目前提供的接口详见[INTERFACE.md](/blob/master/INTERFACE.md)
