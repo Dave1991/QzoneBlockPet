@@ -13,7 +13,8 @@
 - web3.js : 使用npm安装，以太坊提供的js接口以rpc方式访问区块链数据和合约
 - truffle : 第三方开源的DApp打包工具
 - express : node.js服务器开发框架
-- ethereum-testrpc : 以太坊提供的区块链测试环境
+- ethereumjs-testrpc : 以太坊提供的区块链测试环境
+- truffle-contract : 基于web3.js封装的更易用接口
 
 ### 运行方式
 1. `$ testrpc`
