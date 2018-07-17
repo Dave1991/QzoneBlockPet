@@ -9,8 +9,8 @@
 
 ### 依赖
 使用npm install xxx安装
-- node.js : 在官网下载二进制安装包，或者用brew/apt-get安装
-- web3.js : 使用npm安装，以太坊提供的js接口以rpc方式访问区块链数据和合约
+- nodejs : 在官网下载二进制安装包，或者用brew/apt-get安装
+- web3 : 使用npm安装，以太坊提供的js接口以rpc方式访问区块链数据和合约
 - truffle : 第三方开源的DApp打包工具
 - express : node.js服务器开发框架
 - ethereumjs-testrpc : 以太坊提供的区块链测试环境
